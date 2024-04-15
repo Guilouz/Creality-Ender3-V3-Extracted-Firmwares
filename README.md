@@ -1,6 +1,6 @@
 # Creality Ender 3 V3 Extracted Firmwares
 
-
+![Creality-Ender-3-V3-CoreXZ](https://github.com/Guilouz/Creality-Ender3-V3-Extracted-Firmwares/assets/12702322/2c282c1d-c14c-43cc-8bb8-81dff98af256)
 
 ## About
 
