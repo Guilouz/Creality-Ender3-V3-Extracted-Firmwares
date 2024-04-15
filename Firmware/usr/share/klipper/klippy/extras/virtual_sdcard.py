@@ -369,7 +369,14 @@ class VirtualSD:
         cur_pos = f.tell()
         buf = ''
         while True:
-            b = str(f.read(1))
+            try:
+                b = str(f.read(1))
+            except UnicodeDecodeError as err:
+                logging.error("UnicodeDecodeError err:%s" % str(err))
+                cur_pos -= 1
+                if cur_pos < 0: break
+                f.seek(cur_pos)
+                continue
             buf = b + buf
             cur_pos -= 1
             if cur_pos < 0: break

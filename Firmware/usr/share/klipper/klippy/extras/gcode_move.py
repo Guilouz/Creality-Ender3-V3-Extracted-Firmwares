@@ -421,7 +421,7 @@ class GCodeMove:
                 #y = toolhead.get_position()[1]
                 #gcode.run_script_from_command("STEPPER_Z_SENEORLESS")
                 #gcode.run_script_from_command("M400")  
-                z = math.fabs(self.save_z_pos) - 0.46
+                z = math.fabs(self.save_z_pos) - 0.43
                 self.gcode.respond_info("x={} y={} z={}".format(x,y,z))
             else :
                 z = math.fabs(self.z_high_default) #state['last_position'][2] + self.variable_safe_z + state["variable_z_safe_pause"]

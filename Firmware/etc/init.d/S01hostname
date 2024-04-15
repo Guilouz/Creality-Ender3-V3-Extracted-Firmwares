@@ -27,7 +27,7 @@ set_hostname_with_model_mac()
                 model="Ender3V3"
                 ;;
             "F002")
-                model="Ender3V3 Plus"
+                model="Ender3V3-Plus"
                 ;;
             *)
                 ;;
