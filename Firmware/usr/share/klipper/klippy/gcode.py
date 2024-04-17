@@ -302,11 +302,15 @@ class GCodeDispatch:
         lines = [l.strip() for l in msg.strip().split('\n')]
         self.respond_raw("// " + "\n// ".join(lines))
     def _respond_error(self, msg):
+        import time
         from extras.tool import reportInformation
         try:
             v_sd = self.printer.lookup_object('virtual_sdcard')
             if v_sd.print_id and "key" in msg and re.findall('key(\d+)', msg) and v_sd.cur_print_data:
                 v_sd.update_print_history_info(only_update_status=True, state="error", error_msg=eval(msg))
+                if os.path.exists("/tmp/camera_main"):
+                    reportInformation("key608", data={"print_id": v_sd.print_id})
+                    time.sleep(0.2)
                 v_sd.print_id = ""
                 reportInformation("key701", data=v_sd.cur_print_data)
                 v_sd.cur_print_data = {}

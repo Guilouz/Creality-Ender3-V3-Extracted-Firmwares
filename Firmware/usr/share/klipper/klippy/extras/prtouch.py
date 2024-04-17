@@ -249,9 +249,9 @@ class PRTouchEndstopWrapper:
 
     def _set_hot_temps(self, temp, fan_spd, wait=False, err=5):
         self.obj.pheaters.set_temperature(self.obj.heater_hot, temp, False)
-        self.obj.gcode.run_script_from_command('M106 P0 S%d' % (fan_spd))
-        # self.obj.gcode.run_script_from_command('M106 P1 S%d' % (fan_spd))
-        self.obj.gcode.run_script_from_command('M106 P2 S%d' % (fan_spd))
+        self.obj.gcode.run_script_from_command('M106 P0 S%d G1' % (fan_spd))
+        # self.obj.gcode.run_script_from_command('M106 P1 S%d G1' % (fan_spd))
+        self.obj.gcode.run_script_from_command('M106 P2 S%d G1' % (fan_spd))
         # self.obj.gcode.run_script_from_command('SET_PIN PIN=fan0 VALUE=%d' % (fan_spd))
         # self.obj.gcode.run_script_from_command('SET_PIN PIN=fan1 VALUE=%d' % (fan_spd))
         # self.obj.gcode.run_script_from_command('SET_PIN PIN=fan2 VALUE=%d' % (fan_spd))

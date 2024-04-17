@@ -13,7 +13,7 @@ BLK_NUM=$(fdisk -l | grep 'sn_mac' | awk '{print $1}')
 BLK=/dev/mmcblk0p${BLK_NUM}
 
 # 读取SN_MAC分区号的内容(格式:"sn"14 + ';' + "mac"12 + ';' + 上位机 + ';' + 主板型号 + ';' +
-# PCBA厂测标志 + ';' + 整机SN + ';' + 2个预留)
+# PCBA厂测标志 + ';' + 整机SN + ';' + 结构版本 + ';' + 1个预留)
 tmp=$(dd if=${BLK} count=1 2>/dev/null)
 
 # sn

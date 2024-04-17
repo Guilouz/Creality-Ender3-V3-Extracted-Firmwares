@@ -56,7 +56,7 @@ class SoftHomingInit:
             check_flag = False
         if self.check_home_flag == 1:
             check_flag = True
-        gcmd.respond_info('X check_home_falg = %d' %(check_flag))
+        # gcmd.respond_info('X check_home_falg = %d' %(check_flag))
         while(1):
             i = i + 1
             gcode.run_script_from_command('G91')
@@ -109,7 +109,7 @@ class SoftHomingInit:
             check_flag = False
         if self.check_home_flag == 1:
             check_flag = True
-        gcmd.respond_info('Y check_home_falg = %d' %(check_flag))
+        # gcmd.respond_info('Y check_home_falg = %d' %(check_flag))
         while(1):
             i = i + 1
             gcode.run_script_from_command('G91')

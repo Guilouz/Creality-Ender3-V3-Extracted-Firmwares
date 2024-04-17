@@ -51,6 +51,7 @@ class VirtualSD:
         self.user_print_refer_path = "/usr/data/creality/userdata/config/user_print_refer.json"
         self.print_file_name_path = "/usr/data/creality/userdata/config/print_file_name.json"
         self.speed_mode_path = "/usr/data/creality/userdata/config/speed_mode.json"
+        self.flow_rate_path = "/usr/data/creality/userdata/config/flow_rate.json"
         self.print_first_layer = False
         self.first_layer_stop = False
         self.count_M204 = 0
@@ -63,6 +64,8 @@ class VirtualSD:
         self.run_dis = 0.0
         self.print_id = ""
         self.cur_print_data = {}
+        self.layer_key = ""
+        self.end_print_state = False
     def handle_shutdown(self):
         if self.work_timer is not None:
             self.must_pause_work = True
@@ -204,7 +207,9 @@ class VirtualSD:
     cmd_SDCARD_PRINT_FILE_help = "Loads a SD file and starts the print.  May "\
         "include files in subdirectories."
     def cmd_SDCARD_PRINT_FILE(self, gcmd):
+        self.end_print_state = False
         self.print_id = ""
+        self.layer_key = ""
         if self.work_timer is not None:
             raise gcmd.error("SD busy")
         self._reset_file()
@@ -271,10 +276,6 @@ class VirtualSD:
                             if error_msg:
                                 update_obj["error_msg"] = error_msg
                             update_obj["status"] = state
-                            if only_update_status and self.print_id and (state == "error" or state == "completed") and os.path.exists("/tmp/camera_main"):
-                                update_obj["jpg_filename"] = "%s.jpg" % self.print_id
-                                time.sleep(0.5)
-                                reportInformation("key608", data={"print_id": self.print_id})
 
                 if index != -1:
                     print_list[index] = update_obj
@@ -427,13 +428,14 @@ class VirtualSD:
                         logging.info("power_loss get XYZE:%s" % str(result))
                         break
                     self.reactor.pause(self.reactor.monotonic() + .001)
-        except Exception as err:
+        except UnicodeDecodeError as err:
             logging.exception(err)
             # UnicodeDecodeError 'utf-8' codec can't decode byte 0xff in postion 5278: invalid start byte
             err_msg = '{"code": "key572", "msg": "File UnicodeDecodeError"}'
             self.gcode.respond_info(err_msg)
             raise self.printer.command_error(err_msg)
-
+        except Exception as err:
+            logging.exception(err)
         return result
     def get_print_temperature(self, file_path):
         bed = 0
@@ -531,7 +533,25 @@ class VirtualSD:
                         logging.info("power_loss slow_print speed_mode:%s Resume" % speed_cmd)
             except Exception as err:
                 logging.error("resume_print_speed err:%s" % err)
-        
+            self.resume_flow_rate()
+
+    def resume_flow_rate(self):
+        try:
+            value = -1
+            if os.path.exists(self.flow_rate_path):
+                with open(self.flow_rate_path, "r") as f:
+                    result = json.loads(f.read())
+                    value = result.get("value", -1)
+            speed_cmd = ""
+            
+            if value != -1:
+                speed_cmd = "M221 S%s" % value
+            if speed_cmd:
+                self.gcode.run_script_from_command(speed_cmd)
+                self.gcode.run_script_from_command("M400")
+                logging.info("power_loss slow_print resume_flow_rate:%s Resume" % speed_cmd)
+        except Exception as err:
+            logging.error("resume_flow_rate err:%s" % err)
     # Background work timer
     def work_handler(self, eventtime):
         filename = os.path.basename(self.current_file.name) if self.current_file else ""
@@ -692,6 +712,8 @@ class VirtualSD:
                     self.layer_count = 0
                     self.fan_state = {}
                     self.update_print_history_info(only_update_status=True, state="completed")
+                    if self.print_id and not self.end_print_state and os.path.exists("/tmp/camera_main"):
+                        reportInformation("key608", data={"print_id": self.print_id})
                     time.sleep(0.3)
                     reportInformation("key701", data=self.cur_print_data)
                     self.cur_print_data = {}
@@ -771,6 +793,9 @@ class VirtualSD:
                     elif M106_line.startswith("M106 P2"):
                         self.fan_state["M106 P2"] = M106_line
                 elif line.startswith("END_PRINT"):
+                    self.end_print_state = True
+                    if self.print_id and os.path.exists("/tmp/camera_main"):
+                        reportInformation("key608", data={"print_id": self.print_id})
                     if os.path.exists(self.print_file_name_path):
                         os.remove(self.print_file_name_path)
                     if os.path.exists(self.gcode.exclude_object_info):
@@ -779,8 +804,11 @@ class VirtualSD:
                         self.gcode.run_script("EEPROM_WRITE_BYTE ADDR=1 VAL=255")
                 for layer_key in LAYER_KEYS:
                     if line.startswith(layer_key):
-                        self.layer += 1
-                        self.record_layer(self.layer)
+                        if not self.layer_key:
+                            self.layer_key = layer_key
+                        if line.startswith(self.layer_key):
+                            self.layer += 1
+                            self.record_layer(self.layer)
                         break
                 if self.print_first_layer and self.count_G1 >= 20:
                     for layer_key in LAYER_KEYS:

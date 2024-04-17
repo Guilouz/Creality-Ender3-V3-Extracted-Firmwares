@@ -56,6 +56,12 @@ class GCodeMove:
         self.saved_states = {}
         self.move_transform = self.move_with_transform = None
         self.position_with_transform = (lambda: [0., 0., 0., 0.])
+        self.z_offset_min = -5.0
+        self.z_offset_max = 5.0
+        if config.has_section('prtouch_v2'):
+            self.z_offset_min = config.getsection('prtouch_v2').getfloat("z_offset_min", -5.0)
+            self.z_offset_max = config.getsection('prtouch_v2').getfloat("z_offset_max", 5.0)
+			
         self.last_z = 0
         if config.has_section('prtouch_v2'):
            prtouch_v2 = config.getsection('prtouch_v2')
@@ -252,6 +258,20 @@ class GCodeMove:
         e_value = (last_e_pos - self.base_position[3]) / self.extrude_factor
         self.base_position[3] = last_e_pos - e_value * new_extrude_factor
         self.extrude_factor = new_extrude_factor
+        import json
+        try:
+            SAVE = int(gcmd.get('SAVE', 0))
+            speed_S = int(gcmd.get_float('S', 100., above=0.))
+            v_sd = self.printer.lookup_object('virtual_sdcard')
+            if SAVE==1:
+                result = {}
+                result["value"] = speed_S
+                with open(v_sd.flow_rate_path, "w") as f:
+                    f.write(json.dumps(result))
+                    f.flush()
+        except Exception as err:
+            err_msg = "cmd_M221 err %s" % str(err)
+            logging.error(err_msg)
     cmd_SET_GCODE_OFFSET_help = "Set a virtual offset to g-code positions"
     def cmd_SET_GCODE_OFFSET(self, gcmd):
         move_delta = [0., 0., 0., 0.]
@@ -268,6 +288,13 @@ class GCodeMove:
             self.homing_position[pos] = offset
         # Move the toolhead the given offset if requested
         if gcmd.get_int('MOVE', 0):
+            probe = self.printer.lookup_object('probe')
+            gcode = self.printer.lookup_object('gcode')
+            result = probe.z_offset - self.homing_position[2]
+            if result > self.z_offset_max or result < self.z_offset_min:
+                err_msg = '{"code": "key588", "msg": "z_offset: %s out of range [%s, %s]"}' % (result, self.z_offset_min, self.z_offset_max)
+                gcode.respond_info(err_msg)
+                return
             speed = gcmd.get_float('MOVE_SPEED', self.speed, above=0.)
             for pos, delta in enumerate(move_delta):
                 self.last_position[pos] += delta
@@ -450,6 +477,8 @@ class GCodeMove:
                 logging.info("power_loss cmd_CX_RESTORE_GCODE_STATE SET M204:%s#" % state["M204"])
                 gcode.run_script_from_command(state["M204"])
             if state["pressure_advance"]:
+                gcode.run_script_from_command("M400")
+                logging.info("power_loss cmd_CX_RESTORE_GCODE_STATE SET pressure_advance:%s#" % state["pressure_advance"])
                 gcode.run_script_from_command(state["pressure_advance"])
             self.absolute_extrude = state['absolute_extrude']
             gcode.run_script_from_command("M221 S%s" % int(state['extrude_factor']*100))
