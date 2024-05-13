@@ -7,6 +7,13 @@ OBJECTS = pyhelper.o serialqueue.o stepcompress.o itersolve.o trapq.o \
 		  kin_deltesian.o kin_polar.o kin_rotary_delta.o kin_winch.o \
 		  kin_extruder.o kin_shaper.o
 
+ifeq ($(wildcard serial_485_queue.c), serial_485_queue.c)
+        OBJECTS += serial_485_queue.o
+endif
+ifeq ($(wildcard msgblock_485.c), msgblock_485.c)
+        OBJECTS += msgblock_485.o
+endif
+
 DIST_LIB = c_helper.so
 
 all: $(DIST_LIB)

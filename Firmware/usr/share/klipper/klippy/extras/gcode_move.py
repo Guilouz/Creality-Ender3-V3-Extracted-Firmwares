@@ -13,6 +13,10 @@ class GCodeMove:
         if config.has_section('gcode_macro PRINTER_PARAM'):
             PRINTER_PARAM = config.getsection('gcode_macro PRINTER_PARAM')
             self.variable_safe_z = PRINTER_PARAM.getfloat('variable_z_safe_g28', 0.0)
+            self.variable_z_coefficient = PRINTER_PARAM.getfloat('variable_z_coefficient', 0.0)
+        else:
+            self.variable_z_coefficient = 0.0
+
         self.printer = printer = config.get_printer()
         printer.register_event_handler("klippy:ready", self._handle_ready)
         printer.register_event_handler("klippy:shutdown", self._handle_shutdown)
@@ -28,6 +32,7 @@ class GCodeMove:
                                        self._handle_home_rails_end)
         self.is_printer_ready = False
         # Register g-code commands
+        self.gcode = printer.lookup_object('gcode')
         gcode = printer.lookup_object('gcode')
         handlers = [
             'G1', 'G20', 'G21',
@@ -167,10 +172,11 @@ class GCodeMove:
             for pos, axis in enumerate('XYZ'):
                 if axis in params:
                     v = float(params[axis])
-                    if axis == "Z":
+                    if axis == "Z" and self.variable_z_coefficient > 0.0 :
+                        #self.gcode.respond_info("variable_z_coefficient: {}".format(self.variable_z_coefficient))
                         temp = v
                         if self.last_z != v:
-                            v *= 0.9972
+                            v *= self.variable_z_coefficient
                         self.last_z = v
                         # gcode.respond_info("z pos:now:{} new:{} absolute_coord:{}".format(temp,v,self.absolute_coord))
                     if not self.absolute_coord:

@@ -1,4 +1,4 @@
-ota_version=1.2.1.3
+ota_version=1.2.1.13
 ota_board_name=F001
-ota_compile_time=2024 03.23 14:01:18
+ota_compile_time=2024 04.15 14:54:14
 ota_site=http://192.168.43.52/ota/board_test
