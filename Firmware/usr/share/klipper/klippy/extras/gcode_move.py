@@ -14,8 +14,10 @@ class GCodeMove:
             PRINTER_PARAM = config.getsection('gcode_macro PRINTER_PARAM')
             self.variable_safe_z = PRINTER_PARAM.getfloat('variable_z_safe_g28', 0.0)
             self.variable_z_coefficient = PRINTER_PARAM.getfloat('variable_z_coefficient', 0.0)
+            self.variable_z_pwl_offset = PRINTER_PARAM.getfloat('variable_z_pwl_offset', 0.0)
         else:
             self.variable_z_coefficient = 0.0
+            self.variable_z_pwl_offset = 0.0
 
         self.printer = printer = config.get_printer()
         printer.register_event_handler("klippy:ready", self._handle_ready)
@@ -454,7 +456,7 @@ class GCodeMove:
                 #y = toolhead.get_position()[1]
                 #gcode.run_script_from_command("STEPPER_Z_SENEORLESS")
                 #gcode.run_script_from_command("M400")  
-                z = math.fabs(self.save_z_pos) - 0.43
+                z = math.fabs(self.save_z_pos) - self.variable_z_pwl_offset #0.43
                 self.gcode.respond_info("x={} y={} z={}".format(x,y,z))
             else :
                 z = math.fabs(self.z_high_default) #state['last_position'][2] + self.variable_safe_z + state["variable_z_safe_pause"]

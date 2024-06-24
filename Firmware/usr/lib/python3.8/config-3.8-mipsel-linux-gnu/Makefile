@@ -30,16 +30,16 @@ MODLIBS=           $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.8
 srcdir=		.
 
-abs_srcdir=	/home/111169/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2
-abs_builddir=	/home/111169/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2
+abs_srcdir=	/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2
+abs_builddir=	/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2
 
 
-CC=		/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
-CXX=		/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-g++
+CC=		/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
+CXX=		/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-g++
 MAINCC=		$(CC)
 LINKCC=		$(PURIFY) $(MAINCC)
-AR=		/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-ar
-READELF=	/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-readelf
+AR=		/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-ar
+READELF=	/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-readelf
 SOABI=		cpython-38-mipsel-linux-gnu
 LDVERSION=	$(VERSION)$(ABIFLAGS)
 LIBPYTHON=	
@@ -195,7 +195,7 @@ ENSUREPIP=      no
 # OpenSSL options for setup.py so sysconfig can pick up AC_SUBST() vars.
 OPENSSL_INCLUDES=
 OPENSSL_LIBS=-lssl -lcrypto 
-OPENSSL_LDFLAGS=-L/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/../mipsel-buildroot-linux-gnu/sysroot/usr/lib 
+OPENSSL_LDFLAGS=-L/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/../mipsel-buildroot-linux-gnu/sysroot/usr/lib 
 
 # Modes for directories, executables and data files created by the
 # install process.  Default to user-only-writable for all file types.
@@ -204,7 +204,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--target=mipsel-buildroot-linux-gnu' '--host=mipsel-buildroot-linux-gnu' '--build=x86_64-pc-linux-gnu' '--prefix=/usr' '--exec-prefix=/usr' '--sysconfdir=/etc' '--localstatedir=/var' '--program-prefix=' '--disable-gtk-doc' '--disable-gtk-doc-html' '--disable-doc' '--disable-docs' '--disable-documentation' '--with-xmlto=no' '--with-fop=no' '--disable-dependency-tracking' '--enable-ipv6' '--disable-nls' '--disable-static' '--enable-shared' '--disable-readline' '--with-libmpdec=none' '--with-expat=system' '--disable-codecs-cjk' '--disable-uuid' '--disable-bzip2' '--disable-xz' '--disable-ossaudiodev' '--without-ensurepip' '--without-cxx-main' '--with-system-ffi' '--disable-pydoc' '--disable-test-modules' '--disable-lib2to3' '--disable-tk' '--disable-nis' '--disable-idle3' '--disable-pyc-build' 'build_alias=x86_64-pc-linux-gnu' 'host_alias=mipsel-buildroot-linux-gnu' 'target_alias=mipsel-buildroot-linux-gnu' 'CC=/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc' 'CFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64  -Os  ' 'LDFLAGS=' 'CPPFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64' 'CPP=/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-cpp' 'PKG_CONFIG=/home/111169/kl_ingenic_linux/buildroot/buildroot/output/host/bin/pkg-config'
+CONFIG_ARGS=	 '--target=mipsel-buildroot-linux-gnu' '--host=mipsel-buildroot-linux-gnu' '--build=x86_64-pc-linux-gnu' '--prefix=/usr' '--exec-prefix=/usr' '--sysconfdir=/etc' '--localstatedir=/var' '--program-prefix=' '--disable-gtk-doc' '--disable-gtk-doc-html' '--disable-doc' '--disable-docs' '--disable-documentation' '--with-xmlto=no' '--with-fop=no' '--disable-dependency-tracking' '--enable-ipv6' '--disable-nls' '--disable-static' '--enable-shared' '--disable-readline' '--with-libmpdec=none' '--with-expat=system' '--disable-codecs-cjk' '--disable-uuid' '--disable-bzip2' '--disable-xz' '--disable-ossaudiodev' '--without-ensurepip' '--without-cxx-main' '--with-system-ffi' '--disable-pydoc' '--disable-test-modules' '--disable-lib2to3' '--disable-tk' '--disable-nis' '--disable-idle3' '--disable-pyc-build' 'build_alias=x86_64-pc-linux-gnu' 'host_alias=mipsel-buildroot-linux-gnu' 'target_alias=mipsel-buildroot-linux-gnu' 'CC=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc' 'CFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64  -Os  ' 'LDFLAGS=' 'CPPFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64' 'CPP=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-cpp' 'PKG_CONFIG=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/pkg-config'
 
 # disabled extensions
 DISABLED_EXTENSIONS=	 _decimal ossaudiodev _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk _codecs_iso2022 nis readline _bz2 _lzma _tkinter _uuid

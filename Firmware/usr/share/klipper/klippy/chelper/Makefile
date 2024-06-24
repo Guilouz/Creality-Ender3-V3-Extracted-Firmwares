@@ -13,6 +13,9 @@ endif
 ifeq ($(wildcard msgblock_485.c), msgblock_485.c)
         OBJECTS += msgblock_485.o
 endif
+ifeq ($(wildcard filament_change.c), filament_change.c)
+        OBJECTS += filament_change.o
+endif
 
 DIST_LIB = c_helper.so
 
