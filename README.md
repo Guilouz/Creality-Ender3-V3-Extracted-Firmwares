@@ -14,6 +14,8 @@ You can find the firmware changes for each version:
 
 - [Changes from **1.2.1.13** to **1.2.3.10**](https://github.com/Guilouz/Creality-Ender3-V3-Extracted-Firmwares/commit/741d4caad345f6596027dcc02176644889abbb40)
 
+- [Changes from **1.2.3.10** to **1.2.3.21**](https://github.com/Guilouz/Creality-Ender3-V3-Extracted-Firmwares/commit/a6dff80fd9b05eeaf006da22e8b6c297fff864e2)
+
 <br />
 
 ## Credits
