@@ -12,8 +12,8 @@ LOCAL_CFLAGS =
 LOCAL_DEFS = -DSHELL
 CCFLAGS = ${LOCAL_DEFS} ${LOCAL_CFLAGS}
 
-CC = /home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
-SHOBJ_CC = /home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
+CC = /data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
+SHOBJ_CC = /data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
 SHOBJ_CFLAGS = -fPIC
 SHOBJ_LD = ${CC}
 SHOBJ_LDFLAGS = -shared -Wl,-soname,$@

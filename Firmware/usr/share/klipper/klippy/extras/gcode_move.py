@@ -198,11 +198,11 @@ class GCodeMove:
             if 'F' in params:
                 gcode_speed = float(params['F'])
                 if gcode_speed <= 0.:
-                    raise gcmd.error("""{"code":"key272": "msg":"Invalid speed in '%s'", "values":["%s"]}"""
+                    raise gcmd.error("""{"code":"key272", "msg":"Invalid speed in '%s'", "values":["%s"]}"""
                                      % (gcmd.get_commandline(),gcmd.get_commandline()))
                 self.speed = gcode_speed * self.speed_factor
         except ValueError as e:
-            raise gcmd.error("""{"code":"key273": "msg":"Unable to parse move '%s'", "values":["%s"]}"""
+            raise gcmd.error("""{"code":"key273", "msg":"Unable to parse move '%s'", "values":["%s"]}"""
                              % (gcmd.get_commandline(),gcmd.get_commandline()))
         self.move_with_transform(self.last_position, self.speed)
     # G-Code coordinate manipulation
@@ -289,7 +289,8 @@ class GCodeMove:
                 offset = gcmd.get_float(axis + '_ADJUST', None)
                 if offset is None:
                     continue
-                offset += self.homing_position[pos]
+                if gcmd.get_int('MOVE', 0):
+                    offset += self.homing_position[pos]
             delta = offset - self.homing_position[pos]
             move_delta[pos] = delta
             self.base_position[pos] += delta

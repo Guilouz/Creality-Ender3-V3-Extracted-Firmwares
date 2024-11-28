@@ -4,7 +4,7 @@ build_time_vars = {'ABIFLAGS': '',
  'AIX_GENUINE_CPLUSPLUS': 0,
  'ALT_SOABI': 0,
  'ANDROID_API_LEVEL': 0,
- 'AR': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-ar',
+ 'AR': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-ar',
  'ARFLAGS': 'rcs',
  'BASECFLAGS': '-Wno-unused-result -Wsign-compare',
  'BASECPPFLAGS': '',
@@ -12,13 +12,13 @@ build_time_vars = {'ABIFLAGS': '',
  'BINDIR': '/usr/bin',
  'BINLIBDEST': '/usr/lib/python3.8',
  'BLDLIBRARY': '-L. -lpython3.8',
- 'BLDSHARED': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc '
+ 'BLDSHARED': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc '
               '-shared',
  'BUILDEXE': '',
  'BUILDPYTHON': 'python',
  'BUILD_GNU_TYPE': 'x86_64-pc-linux-gnu',
  'BYTESTR_DEPS': '\\',
- 'CC': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc',
+ 'CC': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc',
  'CCSHARED': '-fPIC',
  'CFLAGS': '-Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall '
            '-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 '
@@ -57,23 +57,23 @@ build_time_vars = {'ABIFLAGS': '',
                 "'build_alias=x86_64-pc-linux-gnu' "
                 "'host_alias=mipsel-buildroot-linux-gnu' "
                 "'target_alias=mipsel-buildroot-linux-gnu' "
-                "'CC=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc' "
+                "'CC=/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc' "
                 "'CFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE "
                 "-D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64  -Os  ' 'LDFLAGS=' "
                 "'CPPFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE "
                 "-D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64' "
-                "'CPP=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-cpp' "
-                "'PKG_CONFIG=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/pkg-config'",
+                "'CPP=/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-cpp' "
+                "'PKG_CONFIG=/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/pkg-config'",
  'CONFINCLUDEDIR': '/usr/include',
  'CONFINCLUDEPY': '/usr/include/python3.8',
  'COREPYTHONPATH': '',
- 'COVERAGE_INFO': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2/coverage.info',
- 'COVERAGE_REPORT': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2/lcov-report',
+ 'COVERAGE_INFO': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2/coverage.info',
+ 'COVERAGE_REPORT': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2/lcov-report',
  'COVERAGE_REPORT_OPTIONS': '--no-branch-coverage --title "CPython lcov '
                             'report"',
  'CPPFLAGS': '-I. -I./Include -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE '
              '-D_FILE_OFFSET_BITS=64 -D__USE_TIME_BITS64',
- 'CXX': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-g++',
+ 'CXX': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-g++',
  'DESTDIRS': '/usr /usr/lib /usr/lib/python3.8 /usr/lib/python3.8/lib-dynload',
  'DESTLIB': '/usr/lib/python3.8',
  'DESTPATH': '',
@@ -549,13 +549,13 @@ build_time_vars = {'ABIFLAGS': '',
  'INSTSONAME': 'libpython3.8.so.1.0',
  'IO_H': 'Modules/_io/_iomodule.h',
  'IO_OBJS': '\\',
- 'LDCXXSHARED': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-g++ '
+ 'LDCXXSHARED': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-g++ '
                 '-shared',
  'LDFLAGS': '',
  'LDFLAGS_NODIST': '',
  'LDLIBRARY': 'libpython3.8.so',
  'LDLIBRARYDIR': '',
- 'LDSHARED': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc '
+ 'LDSHARED': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc '
              '-shared',
  'LDVERSION': '3.8',
  'LIBC': '',
@@ -573,7 +573,7 @@ build_time_vars = {'ABIFLAGS': '',
  'LIBRARY_OBJS_OMIT_FROZEN': '\\',
  'LIBS': '-lcrypt -lpthread -ldl  -lpthread -lutil -lm',
  'LIBSUBDIRS': 'site-packages \\',
- 'LINKCC': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc',
+ 'LINKCC': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc',
  'LINKFORSHARED': '-Xlinker -export-dynamic',
  'LIPO_32BIT_FLAGS': '',
  'LLVM_PROF_ERR': 'no',
@@ -585,7 +585,7 @@ build_time_vars = {'ABIFLAGS': '',
  'MACHDEP_OBJS': '',
  'MACHDESTLIB': '/usr/lib/python3.8',
  'MACOSX_DEPLOYMENT_TARGET': '',
- 'MAINCC': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc',
+ 'MAINCC': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc',
  'MAJOR_IN_MKDEV': 0,
  'MAJOR_IN_SYSMACROS': 1,
  'MAKESETUP': './Modules/makesetup',
@@ -616,7 +616,7 @@ build_time_vars = {'ABIFLAGS': '',
  'NO_AS_NEEDED': '-Wl,--no-as-needed',
  'OBJECT_OBJS': '\\',
  'OPENSSL_INCLUDES': '',
- 'OPENSSL_LDFLAGS': '-L/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/../mipsel-buildroot-linux-gnu/sysroot/usr/lib',
+ 'OPENSSL_LDFLAGS': '-L/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/../mipsel-buildroot-linux-gnu/sysroot/usr/lib',
  'OPENSSL_LIBS': '-lssl -lcrypto',
  'OPT': '-DNDEBUG -g -fwrapv -O3 -Wall',
  'OTHER_LIBTOOL_OPT': '',
@@ -644,10 +644,10 @@ build_time_vars = {'ABIFLAGS': '',
  'PYTHONFRAMEWORKINSTALLDIR': '',
  'PYTHONFRAMEWORKPREFIX': '',
  'PYTHONPATH': '',
- 'PYTHON_FOR_BUILD': '_PYTHON_PROJECT_BASE=/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2 '
+ 'PYTHON_FOR_BUILD': '_PYTHON_PROJECT_BASE=/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2 '
                      '_PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) '
                      'PYTHONPATH=$(shell test -f pybuilddir.txt && echo '
-                     '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2/`cat '
+                     '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2/`cat '
                      'pybuilddir.txt`:)./Lib '
                      '_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__linux_mipsel-linux-gnu '
                      'python3.8',
@@ -704,7 +704,7 @@ build_time_vars = {'ABIFLAGS': '',
  'Py_HASH_ALGORITHM': 0,
  'Py_TRACE_REFS': 0,
  'QUICKTESTOPTS': '-x test_subprocess test_io test_lib2to3 \\',
- 'READELF': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-readelf',
+ 'READELF': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-readelf',
  'RESSRCDIR': 'Mac/Resources/framework',
  'RETSIGTYPE': 'void',
  'RUNSHARED': '',
@@ -772,8 +772,8 @@ build_time_vars = {'ABIFLAGS': '',
  'WITH_VALGRIND': 0,
  'X87_DOUBLE_ROUNDING': 0,
  'XMLLIBSUBDIRS': 'xml xml/dom xml/etree xml/parsers xml/sax',
- 'abs_builddir': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2',
- 'abs_srcdir': '/home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2',
+ 'abs_builddir': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2',
+ 'abs_srcdir': '/data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/python3-3.8.2',
  'datarootdir': '/usr/share',
  'exec_prefix': '/usr',
  'prefix': '/usr',

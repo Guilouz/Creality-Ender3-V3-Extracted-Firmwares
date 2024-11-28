@@ -20,6 +20,12 @@ local_get_current_version()
     # return 0
 }
 
+local_get_ota_restriction()
+{
+    get_key_word_from_file /etc/ota_info ota_restriction
+    return $?
+}
+
 # 检查 device 分区大小
 local_device_check_size()
 {

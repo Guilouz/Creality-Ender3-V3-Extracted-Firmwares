@@ -1,8 +1,8 @@
 #!/bin/sh
 
 if [ ! $# -eq 1 ]; then
-	#echo "without parameter(sn or mac)."
-	exit 1
+        #echo "without parameter(sn or mac)."
+        exit 1
 fi
 
 # 传参转为小写
@@ -42,72 +42,75 @@ MACHINE_SN=${tmp%%;*}
 tmp=${tmp#*;}
 # structure version
 STRUCTURE_VERSION=${tmp%%;*}
+#去掉structure version
+tmp=${tmp#*;}
+ic_lc=${tmp%%;*}
 
 # sn校验 -- 长度14，由0-9a-fA-F组成
 check_sn()
 {
-	local result=$(echo $1 | sed -n '/^[0-9A-Fa-f]\{14\}$/ p')
-	#echo "result:${result}"
-	if [ "${result}" = "" ]; then
-	#echo "sn is invalid"
-		return 1
-	fi
-	return 0
+        local result=$(echo $1 | sed -n '/^[0-9A-Fa-f]\{14\}$/ p')
+        #echo "result:${result}"
+        if [ "${result}" = "" ]; then
+        #echo "sn is invalid"
+                return 1
+        fi
+        return 0
 }
 
 # mac校验 -- 长度12，由0-9a-fA-F组成
 check_mac()
 {
-	local result=$(echo $1 | sed -n '/^[0-9A-Fa-f]\{12\}$/ p')
-	local macaddr=
-	#echo "result:${result}"
-	if [ "${result}" = "" ]; then
-		#echo "mac is invalid"
-		return 1
-	fi
-	return 0
+        local result=$(echo $1 | sed -n '/^[0-9A-Fa-f]\{12\}$/ p')
+        local macaddr=
+        #echo "result:${result}"
+        if [ "${result}" = "" ]; then
+                #echo "mac is invalid"
+                return 1
+        fi
+        return 0
 }
 
 if [ $PARAM = "sn" ]; then
-	# 获取序列号
-	check_sn ${SN}
-	if [ $? != 0 ]; then
-		echo "00000000000000"
-		exit 1
-	fi
-	echo ${SN}
+        # 获取序列号
+        check_sn ${SN}
+        if [ $? != 0 ]; then
+                echo "00000000000000"
+                exit 1
+        fi
+        echo ${SN}
 elif [ $PARAM = "mac" ]; then
-	# 获取MAC地址
-	check_mac ${MAC}
-	if [ $? != 0 ]; then
-		# 从macaddr.txt中获取
-		if [ -f /usr/data/macaddr.txt ]; then
-			MAC=$(cat /usr/data/macaddr.txt | sed 's/[^0-9|a-f|A-F]//g')
-			if [ "${#MAC}" = "12" ]; then
-				echo ${MAC}
-				exit 0
-			fi
-		fi
-		# 从efuse chip_id中获取
-		if [ -f /sys/class/misc/efuse-string-version/dev ]; then
-			MAC=$(cmd_efuse read CHIP_ID)
-			MAC=d03110${MAC:0:6}
-			echo ${MAC}
-			exit 0
-		fi
-		# 从随机数中获取
-		if [ -f /proc/sys/kernel/random/uuid ]; then
-			MAC=$(cat /proc/sys/kernel/random/uuid | sed 's/[^0-9|a-f|A-F]//g')
-			MAC=d03110${MAC:0:6}
-			echo ${MAC}
-			exit 0
-		fi
-	fi
-	echo ${MAC}
+        # 获取MAC地址
+        check_mac ${MAC}
+        if [ $? != 0 ]; then
+                # 从macaddr.txt中获取
+                if [ -f /usr/data/macaddr.txt ]; then
+                        MAC=$(cat /usr/data/macaddr.txt | sed 's/[^0-9|a-f|A-F]//g')
+                        if [ "${#MAC}" = "12" ]; then
+                                echo ${MAC}
+                                exit 0
+                        fi
+                fi
+                # 从efuse chip_id中获取
+                if [ -f /sys/class/misc/efuse-string-version/dev ]; then
+                        MAC=$(cmd_efuse read CHIP_ID)
+                        MAC=d03110${MAC:0:6}
+                        echo ${MAC}
+                        exit 0
+                fi
+                # 从随机数中获取
+                if [ -f /proc/sys/kernel/random/uuid ]; then
+                        MAC=$(cat /proc/sys/kernel/random/uuid | sed 's/[^0-9|a-f|A-F]//g')
+                        MAC=d03110${MAC:0:6}
+                        echo ${MAC}
+                        exit 0
+                fi
+        fi
+        echo ${MAC}
 elif [ $PARAM = "model" ]; then
-	echo ${MODEL}
+        echo ${MODEL}
 elif [ $PARAM = "board" ]; then
-	echo ${BOARD}
+        echo ${BOARD}
 elif [ $PARAM = "pcba_test" ]; then
     if [ "x$PCBA_TEST" = "x1" ]; then
        echo "1"
@@ -126,8 +129,11 @@ elif [ $PARAM = "structure_version" ]; then
     else
        echo "0"
     fi
+elif [ $PARAM = "ic_lc" ]; then
+    echo "$ic_lc"
 else
-#	echo "parameter only \"sn\", \"mac\", \"model\", \"board\""
-#	echo "Case-insensitive"
-	exit 1
+#       echo "parameter only \"sn\", \"mac\", \"model\", \"board\""
+#       echo "Case-insensitive"
+        exit 1
 fi
+ 

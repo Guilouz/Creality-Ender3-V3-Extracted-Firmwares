@@ -12,6 +12,7 @@ PRINTER_CONFIG_DIR=$PRINTER_DATA_DIR/config
 PRINTER_LOGS_DIR=$PRINTER_DATA_DIR/logs
 GCODE_FILES_DIR=$PRINTER_DATA_DIR/gcodes
 PID_FILE=/var/run/klippy.pid
+IC_LC_FILE=ic_lc
 mcu_reset()
 {
     [ -z $(pidof klipper_mcu) ] || /etc/init.d/S57klipper_mcu restart
@@ -31,7 +32,7 @@ get_cfg_version()
     else
         echo "000"
     fi
-}    
+}
 # Max backup cfg file count: 5
 # file name like : printer.cfg.1, printer.cfg.2
 backup_usr_cfg()
@@ -76,6 +77,8 @@ copy_config()
     local model=$(get_sn_mac.sh model)
     local board=$(get_sn_mac.sh board)
     local pcba_test=$(get_sn_mac.sh pcba_test)
+    local ic_lc=$(/usr/bin/get_sn_mac.sh ic_lc)
+    echo $ic_lc
     case $model in
         "F001")
             config_dir=F001
@@ -99,6 +102,11 @@ copy_config()
         echo "config_dir is not exist!"
         exit 0
     }
+    [ -d "${CONFIG_PATH}/${IC_LC_FILE}" ] || {
+        echo "config_dir ic_lc is not exist!"
+        exit 0
+    }
+
     if [ -s $PRINTER_CONFIG_DIR/printer.cfg ]; then
         if [ -s $PRINTER_CONFIG_DIR/printer_params.cfg ]; then
             echo "no need to update custom config files"
@@ -118,9 +126,20 @@ copy_config()
             sync
         fi
         # update printer.cfg and keep SAVE_CONFIG section
-        update_config "$CONFIG_PATH/printer.cfg" $PRINTER_CONFIG_DIR/printer.cfg
+        if [ $ic_lc = "0x0001" ]; then
+           update_config "$CONFIG_PATH/${IC_LC_FILE}/printer.cfg" $PRINTER_CONFIG_DIR/printer.cfg
+        else
+           update_config "$CONFIG_PATH/printer.cfg" $PRINTER_CONFIG_DIR/printer.cfg
+        fi
     else
         cp -af "${CONFIG_PATH}"/*.cfg $PRINTER_CONFIG_DIR/
+        if [ $ic_lc = "0x0001" ]; then
+           cp -af "${CONFIG_PATH}"/${IC_LC_FILE}/printer.cfg $PRINTER_CONFIG_DIR/printer.cfg
+           cp -af "${CONFIG_PATH}"/${IC_LC_FILE}/factory_printer.cfg $PRINTER_CONFIG_DIR/factory_printer.cfg
+           echo "F001 F002 LIS2DWTR LC"
+        else
+           echo "F001 F002 "
+        fi
         sync
     fi
     [ "x${gcode_dir}" = "x" ] && {
@@ -136,8 +155,18 @@ copy_config()
     sync
     # overlay printer.cfg for pcba test
     if [ "x$pcba_test" = "x1" ]; then
-        cp -af $PRINTER_CONFIG_DIR/factory_printer.cfg $PRINTER_CONFIG_DIR/printer.cfg && sync
-        mkdir -p /tmp/creality && touch /tmp/creality/factory_test
+         MD5_DEFAULT=`md5sum  "${CONFIG_PATH}"/factory_printer.cfg  | awk '{print $1}'`
+         MD5_CHANGLE=`md5sum  $PRINTER_CONFIG_DIR/factory_printer.cfg  | awk '{print $1}'`
+         if [ $ic_lc = "0x0001" ]; then
+              if [ $MD5_DEFAULT = $MD5_CHANGLE ];then
+                  cp -af "${CONFIG_PATH}"/${IC_LC_FILE}/factory_printer.cfg $PRINTER_CONFIG_DIR/factory_printer.cfg
+              else
+		  echo "factory_printer.cfg revised"
+		
+	      fi
+         fi
+         cp -af $PRINTER_CONFIG_DIR/factory_printer.cfg $PRINTER_CONFIG_DIR/printer.cfg && sync
+         mkdir -p /tmp/creality && touch /tmp/creality/factory_test
     fi
 }
 start() {
@@ -148,10 +177,11 @@ start() {
         [ -d $GCODE_FILES_DIR ] || mkdir -p $GCODE_FILES_DIR
         copy_config
         HOME=/root start-stop-daemon -S -q -b -m -p $PID_FILE \
-                --exec $PROG -- $PY_SCRIPT \
-                $PRINTER_CONFIG_DIR/printer.cfg \
-                -l $PRINTER_LOGS_DIR/klippy.log \
-                -a /tmp/klippy_uds
+		--exec $PROG -- $PY_SCRIPT \
+		$PRINTER_CONFIG_DIR/printer.cfg \
+		-l $PRINTER_LOGS_DIR/klippy.log \
+		-a /tmp/klippy_uds
+	sync
 }
 stop() {
         start-stop-daemon -K -q -p $PID_FILE
@@ -175,3 +205,4 @@ case "$1" in
         exit 1
 esac
 exit $?
+ 

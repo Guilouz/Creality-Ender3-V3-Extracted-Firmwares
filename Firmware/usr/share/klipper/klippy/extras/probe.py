@@ -17,6 +17,7 @@ class PrinterProbe:
     def __init__(self, config, mcu_probe):
         self.printer = config.get_printer()
         self.name = config.get_name()
+        self.config = config
         self.mcu_probe = mcu_probe
         self.speed = config.getfloat('speed', 5.0, above=0.)
         self.lift_speed = config.getfloat('lift_speed', self.speed, above=0.)
@@ -28,8 +29,10 @@ class PrinterProbe:
         self.probe_calibrate_z = 0.
         self.multi_probe_pending = False
         self.last_state = False
+        self.last_offset = 0.
         self.last_z_result = 0.
         self.gcode_move = self.printer.load_object(config, "gcode_move")
+        
         # Infer Z position to move to during a probe
         if config.has_section('stepper_z'):
             zconfig = config.getsection('stepper_z')
@@ -272,12 +275,17 @@ class PrinterProbe:
     def cmd_Z_OFFSET_APPLY_PROBE(self,gcmd):
         offset = self.gcode_move.get_status()['homing_origin'].z
         configfile = self.printer.lookup_object('configfile')
-        # if offset == 0:
-        #     self.gcode.respond_info("Nothing to do: Z Offset is 0")
-        # else:
-        new_calibrate = self.z_offset - offset
+        print_stats = self.printer.load_object(configfile, 'print_stats')
+
+        z_offset_save = self.config.getsection('prtouch_v2').getfloat("z_offset",None)
+        rulet = abs(abs(self.last_offset) - abs(offset))
+        if rulet > 0.051:
+            new_calibrate = z_offset_save
+        else:
+            new_calibrate = offset
+        self.gcode.respond_info("z_offset_save: %.3f    offset: %.3f  new_calibrate: %.3f \n"%(z_offset_save,offset,new_calibrate));
         self.gcode.respond_info(
-            "%s: z_offset: %.3f\n"
+            "%s: z_offset: %.3f\n" 
             "The SAVE_CONFIG command will update the printer config file\n"
             "with the above and restart the printer."
             % (self.name, new_calibrate))
@@ -285,6 +293,7 @@ class PrinterProbe:
         self.z_offset_calibrate = new_calibrate
         self.z_offset_change_flag = True
         self.record_gcode_offset_when_printing()
+        self.last_offset = offset
     cmd_Z_OFFSET_APPLY_PROBE_help = "Adjust the probe's z_offset"
 
     def record_gcode_offset_when_printing(self):
@@ -296,7 +305,7 @@ class PrinterProbe:
             if print_stats and print_stats.state == "printing" and os.path.exists(v_sd.print_file_name_path) and self.z_offset_change_flag:
                 with open(v_sd.print_file_name_path, "r") as f:
                     result = (json.loads(f.read()))
-                    result["SET_GCODE_OFFSET"] = self.z_offset_calibrate
+                    result["SET_GCODE_OFFSET"] = -(self.z_offset_calibrate)
                 with open(v_sd.print_file_name_path, "w") as f:
                     f.write(json.dumps(result))
                     f.flush()

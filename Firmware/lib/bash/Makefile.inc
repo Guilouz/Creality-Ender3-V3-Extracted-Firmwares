@@ -38,7 +38,7 @@ loadablesdir = ${libdir}/bash
 headersdir = $(includedir)/$(PACKAGE_NAME)
 
 topdir = ../..
-BUILD_DIR = /home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/build/bash-5.0
+BUILD_DIR = /data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/build/bash-5.0
 srcdir = .
 
 
@@ -52,7 +52,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALLMODE= -m 0755
 
 
-CC = /home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
+CC = /data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
 RM = rm -f
 
 SHELL = /bin/sh
@@ -87,7 +87,7 @@ CCFLAGS = $(DEFS) $(LOCAL_DEFS) $(LOCAL_CFLAGS) $(CFLAGS)
 # dynamic loading of shared objects, please update the script and send the
 # changes to bash-maintainers@gnu.org.
 #
-SHOBJ_CC = /home/113933/linux/f002/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
+SHOBJ_CC = /data/113933/linux/kl_ingenic_linux/buildroot/buildroot/output/host/bin/mips-linux-gnu-gcc
 SHOBJ_CFLAGS = -fPIC
 SHOBJ_LD = ${CC}
 SHOBJ_LDFLAGS = -shared -Wl,-soname,$@ 

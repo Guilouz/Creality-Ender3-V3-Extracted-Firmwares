@@ -27,10 +27,11 @@ if [ $# -eq 1  -o $# -eq 2 ]; then
     PCBA_TEST=$(echo $tmp | awk -F ';' '{print $5}')
     MACHINE_SN=$(echo $tmp | awk -F ';' '{print $6}')
     STRUCTURE_VERSION=$(echo $tmp | awk -F ';' '{print $7}')
-
+    RESERVED_VERSION=$(echo $tmp | awk -F ';' '{print $8}')
+    
     if [ $# -eq 1 ]; then
         if [ "$PARAM" = "pcba_test" -a "x$PCBA_TEST" = "x1" ]; then
-            output="$SN;$MAC;$MODEL;$BOARD;0;$MACHINE_SN;$STRUCTURE_VERSION;;"
+            output="$SN;$MAC;$MODEL;$BOARD;0;$MACHINE_SN;$STRUCTURE_VERSION;$RESERVED_VERSION;"
             echo -n $output | dd of=$BLK bs=512 count=1 2>/dev/null
             sync
         else
@@ -41,7 +42,7 @@ if [ $# -eq 1  -o $# -eq 2 ]; then
     elif [ $# -eq 2 ]; then
         if [ "$PARAM" = "machine_sn" -a "x$2" != "x" ]; then
             if [ $(get_str_len $MACHINE_SN) -le $(get_str_len $2) ]; then
-                output="$SN;$MAC;$MODEL;$BOARD;$PCBA_TEST;$2;$STRUCTURE_VERSION;;"
+                output="$SN;$MAC;$MODEL;$BOARD;$PCBA_TEST;$2;$STRUCTURE_VERSION;$RESERVED_VERSION"
                 echo -n $output | dd of=$BLK bs=512 count=1 2>/dev/null
                 sync
             else
@@ -52,7 +53,7 @@ if [ $# -eq 1  -o $# -eq 2 ]; then
             fi
         elif [ "$PARAM" = "structure_version" -a "x$2" != "x" ]; then
             if [ $(get_str_len $STRUCTURE_VERSION) -le $(get_str_len $2) ]; then
-                output="$SN;$MAC;$MODEL;$BOARD;$PCBA_TEST;$MACHINE_SN;$2;;"
+                output="$SN;$MAC;$MODEL;$BOARD;$PCBA_TEST;$MACHINE_SN;$2;$RESERVED_VERSION;"
                 echo -n $output | dd of=$BLK bs=512 count=1 2>/dev/null
                 sync
             else

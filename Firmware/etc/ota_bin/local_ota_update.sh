@@ -331,6 +331,16 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
+# 判断是否有区域限制
+local_restriction=`local_get_ota_restriction`
+if [ ! -z "${local_restriction}" ]; then
+    ota_restriction=`get_key_word_from_file ota_site_config.in ota_restriction`
+    if [ "${local_restriction}" != "${ota_restriction}" ]; then
+        local_on_ota_error
+        exit 1
+    fi
+fi
+
 # ota 版本信息
 ota_current_version=`get_key_word_from_file ota_site_config.in current_version`
 if [ $? != 0 ] || [ "$ota_current_version" = "" ]; then
