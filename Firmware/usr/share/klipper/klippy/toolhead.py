@@ -218,6 +218,12 @@ class ToolHead:
         self.can_pause = True
         if self.mcu.is_fileoutput():
             self.can_pause = False
+        
+        printer_config = config.getsection('printer')
+        self.printer_cfg_max_velocity = printer_config.getfloat('max_velocity', None,
+                                                   note_valid=False)
+        self.printer_cfg_max_accel = printer_config.getfloat('max_accel', None,
+                                                   note_valid=False)
         self.move_queue = MoveQueue(self)
         self.commanded_pos = [0., 0., 0., 0.]
         self.printer.register_event_handler("klippy:shutdown",
@@ -607,10 +613,10 @@ class ToolHead:
         self.wait_moves()
     cmd_SET_VELOCITY_LIMIT_help = "Set printer velocity limits"
     def cmd_SET_VELOCITY_LIMIT(self, gcmd):
-
         qmode_max_accel = 0
         qmode_max_accel_to_decel = 0
-
+        max_velocity = 0
+        max_accel = 0
         custom_macro = self.printer.lookup_object('custom_macro')
         self.qmode_flag = custom_macro.qmode_flag
 
@@ -622,20 +628,25 @@ class ToolHead:
             # gcmd.respond_info("SET_VELOCITY_LIMIT] qmode_max_accel={}".format(qmode_max_accel))
             # gcmd.respond_info("SET_VELOCITY_LIMIT] qmode_max_accel_to_decel={}".format(qmode_max_accel_to_decel))
 
-        max_velocity = gcmd.get_float('VELOCITY', None, above=0.)
-        max_accel = gcmd.get_float('ACCEL', None, above=0.)
+        max_velocity = gcmd.get_float('VELOCITY', 0 , above=0.)
+        max_accel = gcmd.get_float('ACCEL', 0 , above=0.)
         square_corner_velocity = gcmd.get_float(
             'SQUARE_CORNER_VELOCITY', None, minval=0.)
         requested_accel_to_decel = gcmd.get_float(
             'ACCEL_TO_DECEL', None, above=0.)
-        if max_velocity is not None:
+        if max_velocity is not 0:
             self.max_velocity = max_velocity
-        if max_accel is not None:
+        if max_accel is not 0:
             if self.qmode_flag and max_accel > qmode_max_accel:
                 self.max_accel = qmode_max_accel
             else:
                 self.max_accel = max_accel
             # gcmd.respond_info("SET_VELOCITY_LIMIT] self.max_accel={}".format(self.max_accel))
+        #打印速度与加速度限制
+        if max_velocity > self.printer_cfg_max_velocity:
+            self.max_velocity = self.printer_cfg_max_velocity
+        if max_accel > self.printer_cfg_max_accel:
+            self.max_accel = self.printer_cfg_max_accel
         if square_corner_velocity is not None:
             if square_corner_velocity > self.square_corner_max_velocity:
                 square_corner_velocity = self.square_corner_max_velocity
